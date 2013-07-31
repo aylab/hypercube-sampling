@@ -78,8 +78,11 @@ int main(int argc, char** argv){
 	//This actually does the work of sampling and running the simulations.
 	recurse_params rp(ip); 
 	timestamp();
+	//If the user specified they would just like some random parameter sets, just give them that.
 	if(ip.raw_data > 0){ 
-		make_raw(ip, rp, range_map,ranges); 
+		make_raw(ip, rp, range_map,ranges);
+		
+	//Defalt behavior is to actually run the LHS code. 
 	}else if(ip.lhs){
 		range_list* valid_cubes = new range_list(); 
 		sample_recurse(ip, rp, ranges, range_map, valid_cubes);
@@ -94,6 +97,7 @@ int main(int argc, char** argv){
 		cout << "Successful cubes found: " << append << "\n"; 
 		delete valid_cubes;
 		
+	//If lhs was turned off, this will just run simple sampling.	
 	} else{ 
 		simple_sample(ip, rp, ranges, range_map); 
 	}
@@ -119,11 +123,12 @@ bool sample_recurse(input_params& ip,  recurse_params& rp, double* ranges, int* 
 	if(rp.depth > ip.max_depth){
 		cout << "Reached maximum recursion depth. " << "\n";
 		rp.depth--;
-		return false; // (AAy: ??? How do we use the returned false here?)
+		return false; 
 	}
 	
 	//Looping to get many points from within the space.
 	int success_count = 0;
+	//This list is used to hold on to all cube that were successful enough at this depth and should be recursed upon.
 	range_list* new_cubes = new range_list();
 	for(int rerun = 0; rerun < ip.lhs_runs; rerun++){
 		//Getting the IHS choice of segments.
@@ -356,7 +361,7 @@ void simulate_samples(input_params& ip, recurse_params& rp ){
 		}   	
     }
     if(rp.failure != NULL){
-    	del_args(ip,child_args); /
+    	del_args(ip,child_args); 
 		del_pipes(ip.processes, pipes, true); 
 		return;  
     }
@@ -471,24 +476,28 @@ int analyze(input_params& ip, recurse_params& rp, double* ranges, range_list* ne
 			best_grade = grade;
 		}
 		cout << "Grade: " << rp.grades[i] << " ----- Passing grade: " << rp.passing_grade << "\n";
+		//Check to see if this segment yeilded a successful parameter set.
 		if( grade  >= ip.calc_threshold(rp.depth)){
-			desperate = false; // (AAy: ??? What is desperate?)
+			desperate = false; 
 			new_range = new double[ip.dims[0]*2]; 
 			new_seg = new int[ip.dims[0]];
-			rescale(i*ip.dims[0], ip.dims[0], ip.segments, rp.segs, new_seg, ranges, new_range); // (AAy: ??? What is rescale doing?)
-			if(new_cubes->find(ip.segments, new_seg)){ // (AAy: ??? What is rescale doing?)
+			rescale(i*ip.dims[0], ip.dims[0], ip.segments, rp.segs, new_seg, ranges, new_range);
+			//Check to see if the segment has already been discoverd and added to the list
+			if(new_cubes->find(ip.segments, new_seg)){ 
 				delete[] new_range;
 				delete[] new_seg;
 			} else{
+				//If it's new, put it onto the list.
 				new_cubes->add(new_seg, new_range, grade);
-				//Put it to file.
+				//Write the successful parameter set to file.
 				single_sample_write (rp.good_samples, ip.dims[0]+ip.dims[1],rp.passing_grade, rp.grades[i],  rp.samples+(i*(ip.dims[0]+ip.dims[1])),ip.params_file);
 				rp.good_samples++;
 			}
 			success++;
 		}
 	}
-	if(ip.take_best && desperate && best_grade>0){ // (AAy: ??? Taking the best cube which satisfied)
+	//This check is used if take_best is enabled -- in which case the program will recurse on the best segment found even if it did not pass the threshold.
+	if(ip.take_best && desperate && best_grade>0){ 
 		cout << "No successful cubes. Taking the best cube which satisfied " << best_grade*100 <<"% of conditions" << "\n";
 		new_range = new double[ip.dims[0]*2];
 		new_seg = new int[ip.dims[0]];
@@ -860,7 +869,7 @@ int count_success(input_params& ip, recurse_params& rp){
 }
 
 void make_raw(input_params& ip, recurse_params& rp, int* range_map, double* ranges){
-	excess = (ip.raw_data % ip.segments)
+	int excess = (ip.raw_data % ip.segments);
 	for(int i = 0; i < ip.raw_data/ip.segments; i++){
 		rand_sample(ip, rp, range_map, ranges);
 		sample_write(i, ip.dims[0] + ip.dims[1], ip.segments, ip.duplication, ip.lhs_runs, rp.passing_grade, rp.samples, NULL, ip.params_file );

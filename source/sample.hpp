@@ -80,12 +80,12 @@ struct input_params{
 		num_needed = (int)(.03*(double)segments) + 1;
 		condition_threshold = .70;
 		cube_threshold = .70;
-		ranges_file = (char*)"sampleData/initial.ranges";
-		params_file = (char*)"sampleData/initial.params";
-		segments_file = (char*)"sampleData/initial.segments";
-		cubes_file = (char*)"sampleData/initial.cubes";	
-		verbose_file = (char*)"sampleData/all-tries.params";			
-		sim_exec = (char*) "../deterministic";
+		ranges_file = (char*)"sampleData/88.ranges";
+		params_file = (char*)"sampleData/passed_88.params";
+		segments_file = (char*)"sampleData/passed_88.segments";
+		cubes_file = (char*)"sampleData/passed_88.cubes";	
+		verbose_file = (char*)"sampleData/all_sets_used_88.params";			
+		sim_exec = (char*) "../sogen-deterministic/deterministic";
 		simulation_args = NULL;
 	}
 	
@@ -94,10 +94,13 @@ struct input_params{
 	}
 
 /*	This function is used for increasing how many mutants need to pass depending on the depth of the recursion. 
-	You can turn it off though.
+	This is disabled by default, in which case the function just returns ip.conditions_threshold.
 */	
 	double calc_threshold(int depth){
-		return (increase_threshold ? condition_threshold + (1 - condition_threshold )*((double)depth / ((double)depth + (double)max_depth)) : condition_threshold);
+		if(increase_threshold){
+			 return condition_threshold + (1 - condition_threshold )*((double)depth / ((double)depth + (double)max_depth));
+		}
+		return  condition_threshold;
 	}
 };
 
@@ -116,15 +119,15 @@ struct recurse_params{
 		depth = 0; 
 		good_samples = 0;
 		passing_grade = 0;
-		grades = new int[ ip.segments ];  //The scores of each simulation.
+		grades = new int[ ip.segments ];  //This will store the scores of each simulation.
 		for (int i = 0; i < ip.segments; i++) {
 			grades[i] = 0;
 		}
-		segs = new int[ip.dims[0]*ip.segments]; // (AAy: ??? The location for each box)
+		segs = new int[ip.dims[0]*ip.segments]; //This will store the location of each box
 		for (int i = 0; i < ip.dims[0]*ip.segments; i++) {
 			segs[i] = 0;
 		}
-		samples = new double[(ip.dims[0]+ip.dims[1])*ip.segments]; // (AAy: ??? The zeros are filled in for the parameters not used)
+		samples = new double[(ip.dims[0]+ip.dims[1])*ip.segments]; //Initially zero out the array.
 		for (int i = 0; i < (ip.dims[0]+ip.dims[1])*ip.segments; i++) {
 			samples[i] = 0;
 		}
@@ -143,10 +146,10 @@ struct recurse_params{
 };
 
 struct range_node{
-	double* ranges; // (AAy: ??? Ranges of the parameter)
-	int* segment; // (AAy: ??? 1 box location)
-	double grade; // (AAy: ??? Score you are getting)
-	int count; // (AAy: ??? Counter for the successful hits in a box)
+	double* ranges; //  Ranges of the parameter
+	int* segment; //  Location of the box 
+	double grade; // Score for this box
+	int count; // Counter for the successful hits in a box
 	
 	range_node* next;
 	range_node* prev;
@@ -207,7 +210,8 @@ struct range_list{
 			tail = tail->next;
 		}		
 	}
-	void concat(range_list* other){ // (AAy: ??? Concatenating new list to an old list)
+	//A simple linked-list concatonation function
+	void concat(range_list* other){
 		if(head == NULL){
 			head = other->head;
 			tail = other->tail;
@@ -217,7 +221,8 @@ struct range_list{
 			tail = other->tail;
 		}
 	}
-	void take(range_list* source, range_node* victim){ // (AAy: ??? Cut a particular box out (successful) and add it to the successfull list.)
+	//A function used to cut a successful box out of a temporary list and add it to the successfull list.
+	void take(range_list* source, range_node* victim){ 
 		if(victim == source->head){
 			source->head = victim->next;
 			source->head->prev = NULL;
@@ -235,7 +240,8 @@ struct range_list{
 		victim->next = NULL;
 		this->tail = victim;
 	}
-	bool find(int seg_size, int* seg){ // (AAy: ??? Increases the counter of the box in the linked list by 1 if it hits again)
+	//Used to check for redundant segments in the successful linked list. If a segment is successful multiple times it gets its count increased.
+	bool find(int seg_size, int* seg){ 
 		bool result = false;
 		bool coord;
 		range_node* subject = head;

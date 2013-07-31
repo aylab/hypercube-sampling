@@ -28,4 +28,4 @@ else:
 
 env = Environment(CXX='g++')
 env.Append(CXXFLAGS=compile_flags, LINKFLAGS=link_flags)
-env.Program(target='sampler', source=['sample.cpp', 'file_io.cpp', 'analyze.cpp', 'ihs.cpp'])
+env.Program(target='sampler', source=['source/sample.cpp', 'source/file_io.cpp', 'source/analyze.cpp', 'source/ihs.cpp'])
