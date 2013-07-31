@@ -1,0 +1,36 @@
+﻿#Parameter Ranges given in (roughly) the correct format for use in the simulation code.
+#Range values will be taken as long as they are in brackets.
+#Name and unit are ignored.
+#Any line starting with a pound will be ignored by the parser.
+#Any parameter that does not need to be sampled should have its min value negated. 
+#	Negative min values will be ignored in the LHS and the corresponding parameter 
+#	value will be passed as zero to the simulation. This allows the parameters to
+#	be easily switched on or off while keeping default values held in place.
+#
+msh1 [30,65]
+msh7 [30,65]
+msh13 [30,65]
+msdelta [30,65]
+mdh1 	[0.1, 0.46] 1/min
+mdh7 	[0.1,0.46] 1/min
+mdh13 	[0.1,0.46] 1/min
+mddelta 	[0.1,0.46] 1/min
+psh1	[10,60]
+psh7	[10,60]
+psh13	[10,60]
+psdelta		[20,60]
+pdh1 [0.11,0.35] 1/min
+pdh7 [0.11,0.35] 1/min
+pdh13 [0.11,0.35] 1/min
+pddelta [0.07, 0.35] 1/min
+delaymh1 [ 8,12] min
+delaymh7 [ 8,12] min
+delaymh13 [ -8,12] ????????
+delaymdelta [ 6, 12] min
+delayph1 [ 0.4,2] min
+delayph7 [ 0.4,2] min
+delayph13 [ 0.4,2] min
+delaypdelta [ 10,25] min
+critph1h1 [ 150,900]
+critph7h13 [ 150,900]
+critpdelta	[ 200,800]

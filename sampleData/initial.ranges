@@ -1,0 +1,107 @@
+﻿#Parameter Ranges given in (roughly) the correct format for use in the simulation code.
+#Range values will be taken as long as they are in brackets.
+#Name and unit are ignored.
+#Any line starting with a pound will be ignored by the parser.
+#Any parameter that does not need to be sampled should have its min value negated. 
+#	Negative min values will be ignored in the LHS and the corresponding parameter 
+#	value will be passed as zero to the simulation. This allows the parameters to
+#	be easily switched on or off while keeping default values held in place.
+#
+msh1 [30,65]
+msh7 [30,65]
+msh12 [-30,65]
+msh13 [30,65]
+msh15 [-30,65]
+msdelta [30,65]
+#4
+mdh1 	[0.1, 0.46] 1/min
+mdh7 	[0.1,0.46] 1/min
+mdh12 	[ -0.1,0.46] 1/min
+mdh13 	[0.1,0.46] 1/min
+mdh15 	[ -0.1,0.46] 1/min
+mddelta 	[0.1,0.46] 1/min
+#8
+psh1	[10,60]
+psh7	[10,60]
+psh12	[ -10,60]
+psh13	[10,60]
+psh15	[ -10,60]
+psdelta		[20,60]
+#12
+pdh1 [0.11,0.35] 1/min
+pdh7 [0.11,0.35] 1/min
+pdh12 [ -0.11,0.35] 1/min
+pdh13 [0.11,0.35] 1/min
+pdh15 [ -0.11,0.35] 1/min
+pddelta [0.07, 0.35] 1/min
+#16
+dah1h1	[ 0.0003,0.03]
+dah1h7	[ 0.0003,0.03]
+dah1h12	[ -0.0003,0.03]
+dah1h13	[ 0.0003,0.03]
+dah1h15	[ -0.0003,0.03]
+dah7h7	[ 0.0003,0.03]
+dah7h12	[ -0.0003,0.03]
+dah7h13	[ 0.0003,0.03]
+dah7h15	[ -0.0003,0.03]
+dah12h12	[ -0.0003,0.03]
+dah12h13	[ -0.0003,0.03]
+dah12h15	[ -0.0003,0.03]
+dah13h13	[ 0.0003,0.03]
+dah13h15	[ -0.0003,0.03]
+dah15h15	[ -0.0003,0.03]
+#22
+ddih1h1	[ 0.003,0.3]
+ddih1h7	[ 0.003,0.3]
+ddih1h12	[ -0.003,0.3]
+ddih1h13	[ 0.003,0.3]
+ddih1h15	[ -0.003,0.3]
+ddih7h7	[ 0.003,0.3]
+ddih7h12	[ -0.003,0.3]
+ddih7h13	[ 0.003,0.3]
+ddih7h15	[ -0.003,0.3]
+ddih12h12	[ -0.003,0.3]
+ddih12h13	[ -0.003,0.3]
+ddih12h15	[ -0.003,0.3]
+ddih13h13	[ 0.003,0.3]
+dai13h15 	[ -0.003,0.3]
+ddih15h15	 [ -0.003,0.3]
+#28
+ddgh1h1	[ 0.11,0.35]
+ddgh1h7	[ 0.11,0.35]
+ddgh1h12	[ -0.11,0.35]
+ddgh1h13	[ 0.11,0.35]
+ddgh1h15	[ -0.11,0.35]
+ddgh7h7	[ 0.11,0.35]
+ddgh7h12	[ -0.11,0.35]
+ddgh7h13	[ 0.11,0.35]
+ddgh7h15	[ -0.11,0.35]
+ddgh12h12	[ -0.11,0.35]
+ddgh12h13	[ -0.11,0.35]
+ddgh12h15	[ -0.11,0.35]
+ddgh13h13	[ 0.11,0.35]
+dag13h15 	[ -0.11,0.35]
+ddgh15h15	 [ -0.11,0.35]
+#34
+delaymh1 [ 8,12] min
+delaymh7 [ 8,12] min
+delaymh12 [ -8, 12]
+delaymh13 [ -8,12] ????????
+delaymh15 [ -8, 12 ]
+delaymdelta [ 6, 12] min
+#37
+delayph1 [ 0.4,2] min
+delayph7 [ 0.4,2] min
+delayph12 [ -0.4,2] min
+delayph13 [ 0.4,2] min
+delayph15 [ -0.4,2] min
+delaypdelta [ 10,25] min
+#41
+critph1h1 [ 150,900]
+critph7h13 [ 150,900]
+critph12h12 [ -1000,9000]
+critph12h13 [ -1000,9000]
+critph13h15 [ -1000,9000]
+critph15h15 [ -1000,9000]
+critpdelta	[ 200,800]
+#44

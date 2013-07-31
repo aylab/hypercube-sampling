@@ -1,0 +1,26 @@
+
+delaymh1 [ 8,12] min
+delaymh7 [ 8,12] min
+delaymh12 [ -8, 12]
+delaymh13 [ -0,12]
+delaymh15 [ -8, 12 ]
+delaymdelta [ 6, 12] min
+delaymmesp [ -1, 0]
+#37
+delayph1 [ 0.4,2] min
+delayph7 [ 0.4,2] min
+delayph12 [ -0.4,2] min
+delayph13 [ 0.4,2] min
+delayph15 [ -0.4,2] min
+delaypdelta [ 10,25] min
+delaypmesp [ -1, 0]
+#41
+critph1h1 [ 150,900]
+critph7h13 [ 150,900]
+critph12h12 [ -1000,9000]
+critph12h13 [ -1000,9000]
+critph13h15 [ -1000,9000]
+critph15h15 [ -1000,9000]
+critpdelta	[ 200,800]
+critpmesp [-1,0]
+#44
